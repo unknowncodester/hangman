@@ -23,7 +23,7 @@ public class WordGenerator {
 
     private void generateWords() {
         try {
-            String fileName = "words.json";
+            String fileName = "animals.json";
             ClassLoader classLoader = getClass().getClassLoader();
 
             File file = new File(classLoader.getResource(fileName).getFile());

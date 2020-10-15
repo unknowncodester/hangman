@@ -5,24 +5,27 @@ import java.util.Scanner;
 
 public class Game {
 
-
     public static void main(String[] args) {
         WordGenerator wordGenerator = new WordGenerator();
         Scanner in = new Scanner(System.in);
-        int lives = 5;
+        Print print = new Print();
+        int lives = 6;
         int correctLetterCount = 0;
 
         StringBuilder maskedWord = new StringBuilder("");
         Word word = wordGenerator.getWord();
 
-        printWelcome();
+        print.welcome();
+        print.clue(word);
 
         for (int i = 0; i < word.getName().length(); i++) {
-            maskedWord.append("?");
+            maskedWord.append("_");
         }
 
         while (lives > 0 && correctLetterCount != word.getName().length()) {
-            printInfo(lives, word, maskedWord.toString());
+            print.gallow(lives);
+            print.mask(maskedWord.toString());
+            print.instructions();
 
             while (! in.hasNext("[a-z]")) {
                 in.nextLine();
@@ -48,39 +51,12 @@ public class Game {
         }
 
         if(correctLetterCount == word.getName().length()){
-            System.out.println("\n" +
-                    " _  _    _      _  _      _      _____ ____    _  _ \n" +
-                    "/ \\/ \\  / \\  /|/ \\/ \\  /|/ \\  /|/  __//  __\\  / \\/ \\\n" +
-                    "| || |  | |  ||| || |\\ ||| |\\ |||  \\  |  \\/|  | || |\n" +
-                    "\\_/\\_/  | |/\\||| || | \\||| | \\|||  /_ |    /  \\_/\\_/\n" +
-                    "(_)(_)  \\_/  \\|\\_/\\_/  \\|\\_/  \\|\\____\\\\_/\\_\\  (_)(_)\n" +
-                    "                                                    \n");
+            print.winner();
         } else {
-            System.out.println("\n" +
-                    "   ___     _     ____  ____  _____ ____   \n" +
-                    "__/ _/    / \\   /  _ \\/ ___\\/  __//  __\\  \n" +
-                    "\\/|/      | |   | / \\||    \\|  \\  |  \\/|  \n" +
-                    "__|\\_     | |_/\\| \\_/|\\___ ||  /_ |    /  \n" +
-                    "\\/\\__\\    \\____/\\____/\\____/\\____\\\\_/\\_\\  \n" +
-                    "                                          \n");
+            print.loser();
+            print.gallow(lives);
         }
 
-        System.out.println("Word was = " + word.getName());
-
+        print.word(word);
     }
-
-    private static void printWelcome() {
-        System.out.println("Welcome to hangman");
-    }
-
-    private static void printInfo(int lives, Word word, String maskedWord) {
-        System.out.println("___________INFORMATION_____________");
-        System.out.println("Topic = " + word.getTopic());
-        System.out.println("Lives = " + lives);
-        System.out.println("Answer = " + maskedWord);
-        System.out.println("Word length = " + word.getName().length());
-        System.out.println("______________GAME________________");
-        System.out.println("Enter a letter and press enter");
-    }
-
 }
